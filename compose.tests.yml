@@ -1,0 +1,22 @@
+services:
+  api-proxy:
+    image: alpine/socat:latest
+    command: "TCP-LISTEN:8091,fork,reuseaddr TCP:host.docker.internal:8091"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - api-proxy
+    network_mode: service:api-proxy
+    environment:
+      TOOLSHOP_UI_BASE_URL: http://host.docker.internal:4200
+      TOOLSHOP_API_BASE_URL: http://host.docker.internal:8091
+      TOOLSHOP_HEADLESS: "true"
+      TOOLSHOP_ADMIN_EMAIL: ${TOOLSHOP_ADMIN_EMAIL:?Set TOOLSHOP_ADMIN_EMAIL in .env}
+      TOOLSHOP_ADMIN_PASSWORD: ${TOOLSHOP_ADMIN_PASSWORD:?Set TOOLSHOP_ADMIN_PASSWORD in .env}
+    volumes:
+      - ./artifacts:/workspace/artifacts
