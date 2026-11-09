@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Secrets and local configuration
+.env
+*.local
+
+# Application under test
+.runtime/
+
+# Test output
+artifacts/
+allure-results/
+allure-report/
+test-results/
+playwright-report/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+.runtime
+.env
+artifacts
+allure-results
+allure-report
+test-results
+**/__pycache__
+**/*.pyc

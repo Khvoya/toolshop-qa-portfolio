@@ -1,0 +1,64 @@
+[project]
+name = "toolshop-qa-portfolio"
+version = "1.0.0"
+description = "Production-style UI, API, and E2E automation for Practice Software Testing"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "allure-pytest>=2.15,<3",
+    "email-validator>=2.2,<3",
+    "playwright>=1.55,<2",
+    "pydantic>=2.11,<3",
+    "pydantic-settings>=2.10,<3",
+    "pytest>=8.4,<10",
+    "pytest-playwright>=0.7,<2",
+    "pytest-rerunfailures>=16,<17",
+    "pytest-xdist>=3.8,<4",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18,<2",
+    "ruff>=0.14,<1",
+]
+
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/toolshop"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --alluredir=artifacts/allure-results"
+testpaths = ["tests"]
+markers = [
+    "api: API integration tests",
+    "ui: browser UI tests",
+    "e2e: end-to-end customer journeys",
+    "smoke: fast critical-path checks",
+    "regression: full regression checks",
+    "negative: negative and validation scenarios",
+    "self: framework self-tests without the application",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests", "scripts"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disable_error_code = ["no-untyped-call", "untyped-decorator"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "PTH", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["toolshop"]
